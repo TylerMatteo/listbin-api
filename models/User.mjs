@@ -8,16 +8,16 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true }
 });
 
-UserSchema.pre('save', next => {
+UserSchema.methods.isCorrectPassword = (password, callback) => bcrypt.compare(password, this.password);
+
+UserSchema.pre('save', function(next) {
     if (this.isNew || this.isModified('password')) {
-        bcrypt.hash(this, saltRounds, (err, hashedPassword) => {
-            if (err) {
-                next(err);
-            } else {
-                this.password = hashedPassword;
-                next();
-            }
-        });
+        bcrypt.hash(this, saltRounds).then( hashedPassword  => {
+            this.password = hashedPassword;
+            next();
+        }, err => {
+            next(err);
+        })
     } else {
         next();
     }
