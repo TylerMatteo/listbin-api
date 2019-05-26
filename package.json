@@ -1,0 +1,25 @@
+{
+  "name": "listbin-api",
+  "version": "1.0.0",
+  "description": "A dead simple api for making lists of things",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --experimental-modules index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TylerMatteo/listbin-api.git"
+  },
+  "author": "Tyler Matteo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TylerMatteo/listbin-api/issues"
+  },
+  "homepage": "https://github.com/TylerMatteo/listbin-api#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.11"
+  }
+}
