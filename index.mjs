@@ -1,9 +1,12 @@
 import express from 'express';
 import User from './models/User';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 const app = express(),
     port = 3000;
+
+app.use(cookieParser());
 
 app.get('/', (req, res) => res.send('Base route'));
 
@@ -44,7 +47,7 @@ app.post('/api/authenticate', (req, res) => {
                 });
         } else {
             const payload = { email };
-            const token = jwt.sign(payload, secret, {
+            const token = jwt.sign(payload, process.env.SECRET, {
                 expiresIn: '1h'
             });
             res.cookie('token', token, { httpOnly: true })
