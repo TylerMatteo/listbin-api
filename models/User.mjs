@@ -12,7 +12,7 @@ UserSchema.methods.isCorrectPassword = (password, callback) => bcrypt.compare(pa
 
 UserSchema.pre('save', function(next) {
     if (this.isNew || this.isModified('password')) {
-        bcrypt.hash(this, saltRounds).then( hashedPassword  => {
+        bcrypt.hash(this.password, saltRounds).then( hashedPassword  => {
             this.password = hashedPassword;
             next();
         }, err => {
@@ -23,4 +23,5 @@ UserSchema.pre('save', function(next) {
     }
 });
 
+const User = mongoose.model('User', UserSchema);
 export default mongoose.model('User', UserSchema);

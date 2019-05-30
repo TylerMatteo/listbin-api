@@ -1,18 +1,38 @@
 import express from 'express';
-import User from './models/User';
+import User from './models/User.mjs';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import path from 'path';
 
 const app = express(),
     port = 3000;
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cookieParser());
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+const mongodbPassword = process.env.MONGOPW;
+console.log({mongodbPassword})
+const mongo_uri = `mongodb+srv://Mattayo45:${mongodbPassword}@cluster0-ekvvn.mongodb.net/ListBin?retryWrites=true&w=majority`;
+mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(`Successfully connected to ${mongo_uri}`);
+  }
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => res.send('Base route'));
 
 app.post('/api/register', (req, res) => {
     const { email, password } = req.body;
-    const user = new User({ emai, password });
+    const user = new User({ email, password });
     user.save(err => {
         if(err) {
             res.status(500).send("Error registering new user please try again.");
